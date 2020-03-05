@@ -21,24 +21,28 @@ namespace familyFinance
 
         static string[] sIncomeArticles = new string[] { "Осн.доход.мужа\t", "Осн.доход.жены\t", "Доп.доход.мужа\t", "Доп.доход.жены\t", "Подарки\t\t", "Соц.выплаты\t" };
         static string[] sExpenseArticles = new string[] { "Еда\t\t", "Жилье\t\t", "Одежда\t\t", "Транспорт\t", "Связь\t\t", "Обучение\t", "Развлечения\t", "Путешествия\t", "Благотворительность", "Прочее\t\t", };
+        static string[] sSavesArticles = new string[] { "Депозит\t\t", "Инвест. фонд\t", "Копилка\t\t" };
         /* Символ \t в строковых переменных обозначает абзац, он необходим, чтобы выровнять поля и сделать их визуально красивыми при выводе. В названии статей не должно быть пробелов! 
          * Это должны быть целые слова, потому что пробел будет служить нам разделителем при чтении из файла, чтобы отделять один элемент от другого */
-        
+
 
         //Функция для строковой переменной
-        string TextBoxLine(string sIncome, string sAllIncome, string sExpense, string sAllExpense, string sDifference)
+        string TextBoxLine(string sIncome, string sAllIncome, string sExpense, string sAllExpense, string sSaves, string sAllSaves, string sDifference)
         {
             string str = "";
             str = str + "Доходы:\r\n" + sIncome;
             str = str + "Общий доход: " + sAllIncome + "\r\n\r\n";
             str = str + "Расходы:\r\n" + sExpense;
             str = str + "Общий расход: " + sAllExpense + "\r\n\r\n";
+            str = str + "Сбережения:\r\n" + sSaves;
+            str = str + "Всего сбережений: " + sAllSaves + "\r\n\r\n";
             str = str + "В наличии: " + sDifference;
             return str;
         }
 
         Fields Income = new Fields(sIncomeArticles.Length + 1);
         Fields Expense = new Fields(sExpenseArticles.Length + 1);
+        Fields Saves = new Fields(sSavesArticles.Length + 1);
         /*Передаем количество строк на одну больше, потому что кроме названия статей у нас есть еще первая строка, в которой будут дни*/
 
         private void frmFinance_Load(object sender, EventArgs e)
@@ -46,19 +50,23 @@ namespace familyFinance
             /*Вызываем методы, которые заполняют первые столбцы значениями из массивов sIncomeArticles и sExpenseArticles*/
             Income.SetFirstColumn(sIncomeArticles);
             Expense.SetFirstColumn(sExpenseArticles);
+            Saves.SetFirstColumn(sSavesArticles);
 
             /*Вызываем методы, которые заполняют первые строки значениями дней*/
             Income.SetDayNumbers();
             Expense.SetDayNumbers();
+            Saves.SetDayNumbers();
 
             /*Заполняем выпадающие списки элементами из массива Articles объектов Income и Expense*/
             for (int i = 0; i < Income.Rows - 1; i++)
                 cmbIncomeArticles.Items.Add(Income.Articles[i + 1, 0]);
             for (int i = 0; i < Expense.Rows - 1; i++)
                 cmbExpenseArticles.Items.Add(Expense.Articles[i + 1, 0]);
+            for (int i = 0; i < Saves.Rows - 1; i++)
+                cmbSavesArticles.Items.Add(Saves.Articles[i + 1, 0]);
 
             /*Выводим в окно вывода начальные значения доходов и расходов, используя функцию TextBoxLine*/
-            rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements()));
+            rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()),  Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
         }
 
         private void btnIncomeAdd_Click(object sender, EventArgs e)
@@ -78,7 +86,7 @@ namespace familyFinance
                     else
                         Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] = txtIncomeAdd.Text;
                     /*Просто записываем значение из текстового поля в элемент массива Articles. Обновляем окно вывода данных, заново вызывая функцию*/
-                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements()));
+                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                     MessageBox.Show("Статья доходов добавлена");
                 }
 
@@ -104,7 +112,7 @@ namespace familyFinance
                         Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] = Convert.ToString(Convert.ToInt32(Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)]) + Convert.ToInt32(txtExpenseAdd.Text));
                     else
                         Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] = txtExpenseAdd.Text;
-                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements()));
+                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                     MessageBox.Show("Статья расходов добавлена");
                 }
                 else
@@ -124,7 +132,8 @@ namespace familyFinance
                 FileStream fsFile = new FileStream(sSaveFile, FileMode.Create);
                 StreamWriter fileWrite = new StreamWriter(fsFile);
                 //Записываем данные в файл, вызывая функцию TextBoxLine
-                fileWrite.Write(TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements())));
+                fileWrite.Write(rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements())));
+
                 fileWrite.Close();
                 MessageBox.Show("Данные сохранены в файл");
             }
@@ -192,7 +201,7 @@ namespace familyFinance
                 Income.SetFirstColumn(sIncomeArticles);
                 Expense.SetFirstColumn(sExpenseArticles);
                 //Обновляем данные в окне вывода, вызывая функцию TextBoxLine
-                rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements()));
+                rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                 MessageBox.Show("Данные загружены из файла");
             }
             else
@@ -203,9 +212,34 @@ namespace familyFinance
 
         private void btnNew_Click (object sender, EventArgs e)
         {
-            Income.Clear();
-            Expense.Clear();
-            rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Convert.ToString(Income.SumOfElements() - Expense.SumOfElements()));
+            if(MessageBox.Show("Несохраненные изменения будут потеряны.\nОчистить?","Сброс",MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                Income.Clear();
+                Expense.Clear();
+                Saves.Clear();
+                rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
+            }
+            
+        }
+
+        private void btnSavesAdd_Click(object sender, EventArgs e)
+        {
+            if (cmbSavesArticles.SelectedIndex != -1)
+            {
+                if (txtSavesAdd.Text != "")
+                {
+                    if (Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] != "-")
+                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = Convert.ToString(Convert.ToInt32(Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)]) + Convert.ToInt32(txtSavesAdd.Text));
+                    else
+                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = txtSavesAdd.Text;
+                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
+                    MessageBox.Show("Сбережение добавлено");
+                }
+                else
+                    MessageBox.Show("Введите значение сбережения");
+            }
+            else
+                MessageBox.Show("Выберите статью сбережения");
         }
     }
 }
