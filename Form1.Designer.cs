@@ -58,12 +58,21 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
+            this.label11 = new System.Windows.Forms.Label();
+            this.label12 = new System.Windows.Forms.Label();
+            this.txtIncomeMax = new System.Windows.Forms.TextBox();
+            this.txtSavesMax = new System.Windows.Forms.TextBox();
+            this.txtExpenseMax = new System.Windows.Forms.TextBox();
+            this.btnMaxCount = new System.Windows.Forms.Button();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numIncomeDay)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numExpenseDay)).BeginInit();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSavesDay)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // btnLoad
@@ -123,7 +132,7 @@
             this.groupBox1.Controls.Add(this.label4);
             this.groupBox1.Controls.Add(this.label3);
             this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Location = new System.Drawing.Point(11, 72);
+            this.groupBox1.Location = new System.Drawing.Point(12, 123);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(207, 147);
             this.groupBox1.TabIndex = 6;
@@ -187,7 +196,7 @@
             this.groupBox2.Controls.Add(this.label1);
             this.groupBox2.Controls.Add(this.label5);
             this.groupBox2.Controls.Add(this.label6);
-            this.groupBox2.Location = new System.Drawing.Point(247, 72);
+            this.groupBox2.Location = new System.Drawing.Point(248, 123);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(207, 147);
             this.groupBox2.TabIndex = 7;
@@ -271,8 +280,9 @@
             // 
             // rtbOutput
             // 
-            this.rtbOutput.Location = new System.Drawing.Point(11, 235);
+            this.rtbOutput.Location = new System.Drawing.Point(12, 286);
             this.rtbOutput.Name = "rtbOutput";
+            this.rtbOutput.ReadOnly = true;
             this.rtbOutput.Size = new System.Drawing.Size(680, 188);
             this.rtbOutput.TabIndex = 8;
             this.rtbOutput.Text = "";
@@ -289,7 +299,7 @@
             // 
             // btnNew
             // 
-            this.btnNew.Location = new System.Drawing.Point(616, 13);
+            this.btnNew.Location = new System.Drawing.Point(12, 76);
             this.btnNew.Name = "btnNew";
             this.btnNew.Size = new System.Drawing.Size(75, 23);
             this.btnNew.TabIndex = 9;
@@ -306,7 +316,7 @@
             this.groupBox3.Controls.Add(this.label7);
             this.groupBox3.Controls.Add(this.label8);
             this.groupBox3.Controls.Add(this.label9);
-            this.groupBox3.Location = new System.Drawing.Point(483, 72);
+            this.groupBox3.Location = new System.Drawing.Point(484, 123);
             this.groupBox3.Name = "groupBox3";
             this.groupBox3.Size = new System.Drawing.Size(207, 147);
             this.groupBox3.TabIndex = 10;
@@ -388,11 +398,88 @@
             this.label9.TabIndex = 3;
             this.label9.Text = "Статья:";
             // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Location = new System.Drawing.Point(133, 23);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(127, 13);
+            this.label10.TabIndex = 11;
+            this.label10.Text = "Максимальный доход:";
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(133, 58);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(132, 13);
+            this.label11.TabIndex = 12;
+            this.label11.Text = "Максимальный расход:";
+            // 
+            // label12
+            // 
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(132, 91);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(159, 13);
+            this.label12.TabIndex = 13;
+            this.label12.Text = "Максимальное сбережение:";
+            // 
+            // txtIncomeMax
+            // 
+            this.txtIncomeMax.Location = new System.Drawing.Point(297, 20);
+            this.txtIncomeMax.Name = "txtIncomeMax";
+            this.txtIncomeMax.ReadOnly = true;
+            this.txtIncomeMax.Size = new System.Drawing.Size(254, 22);
+            this.txtIncomeMax.TabIndex = 14;
+            // 
+            // txtSavesMax
+            // 
+            this.txtSavesMax.Location = new System.Drawing.Point(297, 88);
+            this.txtSavesMax.Name = "txtSavesMax";
+            this.txtSavesMax.ReadOnly = true;
+            this.txtSavesMax.Size = new System.Drawing.Size(254, 22);
+            this.txtSavesMax.TabIndex = 15;
+            // 
+            // txtExpenseMax
+            // 
+            this.txtExpenseMax.Location = new System.Drawing.Point(297, 53);
+            this.txtExpenseMax.Name = "txtExpenseMax";
+            this.txtExpenseMax.ReadOnly = true;
+            this.txtExpenseMax.Size = new System.Drawing.Size(254, 22);
+            this.txtExpenseMax.TabIndex = 16;
+            // 
+            // btnMaxCount
+            // 
+            this.btnMaxCount.Location = new System.Drawing.Point(434, 21);
+            this.btnMaxCount.Name = "btnMaxCount";
+            this.btnMaxCount.Size = new System.Drawing.Size(124, 70);
+            this.btnMaxCount.TabIndex = 17;
+            this.btnMaxCount.Text = "Вычислить максимальные значения";
+            this.btnMaxCount.UseVisualStyleBackColor = true;
+            this.btnMaxCount.Click += new System.EventHandler(this.btnMaxCount_Click);
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.btnMaxCount);
+            this.groupBox4.Location = new System.Drawing.Point(126, 6);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(564, 111);
+            this.groupBox4.TabIndex = 19;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Статистика";
+            // 
             // frmFinance
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(702, 450);
+            this.ClientSize = new System.Drawing.Size(702, 491);
+            this.Controls.Add(this.label12);
+            this.Controls.Add(this.txtExpenseMax);
+            this.Controls.Add(this.txtSavesMax);
+            this.Controls.Add(this.txtIncomeMax);
+            this.Controls.Add(this.label11);
+            this.Controls.Add(this.label10);
             this.Controls.Add(this.groupBox3);
             this.Controls.Add(this.btnNew);
             this.Controls.Add(this.rtbOutput);
@@ -400,6 +487,7 @@
             this.Controls.Add(this.btnSave);
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupBox4);
             this.Name = "frmFinance";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Семейный бюджет";
@@ -413,7 +501,9 @@
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numSavesDay)).EndInit();
+            this.groupBox4.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -449,6 +539,14 @@
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.Label label9;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.Label label12;
+        private System.Windows.Forms.TextBox txtIncomeMax;
+        private System.Windows.Forms.TextBox txtSavesMax;
+        private System.Windows.Forms.TextBox txtExpenseMax;
+        private System.Windows.Forms.Button btnMaxCount;
+        private System.Windows.Forms.GroupBox groupBox4;
     }
 }
 

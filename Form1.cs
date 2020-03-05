@@ -74,28 +74,38 @@ namespace familyFinance
             //Проверка, что пользователь выбрал что-то из списка
             if (cmbIncomeArticles.SelectedIndex != -1)
             {
-                //Проверка, что пользователь ввел значение в окно
+                    //Проверка, что пользователь ввел значение в окно
                 if (txtIncomeAdd.Text != "")
                 {
-                    //Проверка, что перезаписываемое значение не "-"
-                    if (Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] != "-")
-                        Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] = Convert.ToString(Convert.ToInt32(Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)]) + Convert.ToInt32(txtIncomeAdd.Text));
-                    /*Обновляем значение поля массива Articles, прибавляя к нему значение из текстового поля. Номера элементов берем из выпадающего списка и списка дней месяца. 
-                     Делаем явные конвертации типов, чтобы не возникало ошибок.*/
-                    /*Если в массиве был "-", то просто записываем данные из поля*/
-                    else
+                    int num;
+                    bool isNum = int.TryParse(txtIncomeAdd.Text, out num);
+                    if (isNum)
+                    {
+                        //Проверка, что перезаписываемое значение не "-"
+                        if (Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] != "-")
+                        {
+                            Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] = Convert.ToString(Convert.ToInt32(Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)]) + Convert.ToInt32(txtIncomeAdd.Text));
+                            /*Обновляем значение поля массива Articles, прибавляя к нему значение из текстового поля. Номера элементов берем из выпадающего списка и списка дней месяца. 
+                         Делаем явные конвертации типов, чтобы не возникало ошибок.*/
+                            /*Если в массиве был "-", то просто записываем данные из поля*/
+                       
+                        }
+                        else
                         Income.Articles[(cmbIncomeArticles.SelectedIndex + 1), Convert.ToInt32(numIncomeDay.Value)] = txtIncomeAdd.Text;
-                    /*Просто записываем значение из текстового поля в элемент массива Articles. Обновляем окно вывода данных, заново вызывая функцию*/
-                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
-                    MessageBox.Show("Статья доходов добавлена");
+                        /*Просто записываем значение из текстового поля в элемент массива Articles. Обновляем окно вывода данных, заново вызывая функцию*/
+                        rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
+                        MessageBox.Show("Статья доходов добавлена");
+                    }
+                else
+                {
+                    MessageBox.Show("Введите число!");
                 }
-
+            }
                 else
                 {
                     MessageBox.Show("Введите значение дохода");
                 }
             }
-
             else
             {
                 MessageBox.Show("Выберите статью дохода");
@@ -108,12 +118,21 @@ namespace familyFinance
             {
                 if (txtExpenseAdd.Text != "")
                 {
-                    if (Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] != "-")
+                    int num;
+                    bool isNum = int.TryParse(txtExpenseAdd.Text, out num);
+                    if (isNum)
+                    {
+                        if (Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] != "-")
                         Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] = Convert.ToString(Convert.ToInt32(Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)]) + Convert.ToInt32(txtExpenseAdd.Text));
                     else
                         Expense.Articles[(cmbExpenseArticles.SelectedIndex + 1), Convert.ToInt32(numExpenseDay.Value)] = txtExpenseAdd.Text;
                     rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                     MessageBox.Show("Статья расходов добавлена");
+                }
+                    else
+                    {
+                        MessageBox.Show("Введите число!");
+                    }
                 }
                 else
                     MessageBox.Show("Введите значение расхода");
@@ -128,12 +147,21 @@ namespace familyFinance
             {
                 if (txtSavesAdd.Text != "")
                 {
-                    if (Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] != "-")
+                    int num;
+                    bool isNum = int.TryParse(txtSavesAdd.Text, out num);
+                    if (isNum)
+                    {
+                        if (Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] != "-")
                         Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = Convert.ToString(Convert.ToInt32(Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)]) + Convert.ToInt32(txtSavesAdd.Text));
                     else
                         Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = txtSavesAdd.Text;
                     rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                     MessageBox.Show("Сбережение добавлено");
+                }
+                    else
+                    {
+                        MessageBox.Show("Введите число!");
+                    }
                 }
                 else
                     MessageBox.Show("Введите значение сбережения");
@@ -256,6 +284,13 @@ namespace familyFinance
                 rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
             }
             
+        }
+
+        private void btnMaxCount_Click(object sender, EventArgs e)
+        {
+            txtIncomeMax.Text = Income.Max();
+            txtExpenseMax.Text = Expense.Max();
+            txtSavesMax.Text = Saves.Max();
         }
     }
 }
