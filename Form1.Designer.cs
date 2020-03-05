@@ -299,6 +299,7 @@
             this.Controls.Add(this.btnLoad);
             this.Controls.Add(this.groupBox1);
             this.Name = "frmFinance";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Семейный бюджет";
             this.Load += new System.EventHandler(this.frmFinance_Load);
             this.groupBox1.ResumeLayout(false);
