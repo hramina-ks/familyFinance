@@ -21,7 +21,7 @@ namespace familyFinance
 
         static string[] sIncomeArticles = new string[] { "Осн.доход.мужа\t", "Осн.доход.жены\t", "Доп.доход.мужа\t", "Доп.доход.жены\t", "Подарки\t\t", "Соц.выплаты\t" };
         static string[] sExpenseArticles = new string[] { "Еда\t\t", "Жилье\t\t", "Одежда\t\t", "Транспорт\t", "Связь\t\t", "Обучение\t", "Развлечения\t", "Путешествия\t", "Благотворительность", "Прочее\t\t", };
-        static string[] sSavesArticles = new string[] { "Депозит\t\t", "Инвест. фонд\t", "Копилка\t\t" };
+        static string[] sSavesArticles = new string[] { "Депозит\t\t", "Инвест.фонд\t", "Копилка\t\t" };
         /* Символ \t в строковых переменных обозначает абзац, он необходим, чтобы выровнять поля и сделать их визуально красивыми при выводе. В названии статей не должно быть пробелов! 
          * Это должны быть целые слова, потому что пробел будет служить нам разделителем при чтении из файла, чтобы отделять один элемент от другого */
 
@@ -122,6 +122,26 @@ namespace familyFinance
                 MessageBox.Show("Выберите статью расхода");
         }
 
+        private void btnSavesAdd_Click(object sender, EventArgs e)
+        {
+            if (cmbSavesArticles.SelectedIndex != -1)
+            {
+                if (txtSavesAdd.Text != "")
+                {
+                    if (Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] != "-")
+                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = Convert.ToString(Convert.ToInt32(Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)]) + Convert.ToInt32(txtSavesAdd.Text));
+                    else
+                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = txtSavesAdd.Text;
+                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
+                    MessageBox.Show("Сбережение добавлено");
+                }
+                else
+                    MessageBox.Show("Введите значение сбережения");
+            }
+            else
+                MessageBox.Show("Выберите статью сбережения");
+        }
+
         private void btnSave_Click(object sender, EventArgs e)
         {
             string sSaveFile = "";
@@ -189,6 +209,21 @@ namespace familyFinance
                             for (int j = 0; j < Expense.Columns; j++)
                                 Expense.Articles[i, j] = mas[j].Trim(new char[] { '\t' });
                         }
+                        temp = fileRead.ReadLine();
+                        //читаем лишнее (общий расход)
+                        temp = fileRead.ReadLine();
+                        //читаем лишнее (пустая строка)
+                        temp = fileRead.ReadLine();
+                        //читаем лишнее (сбережения)
+
+                        for (int i = 0; i < Saves.Rows; i++)
+                        {
+                            string[] separator = new string[] { " " };
+                            string[] mas = new string[Saves.Columns];
+                            mas = fileRead.ReadLine().Split(separator, StringSplitOptions.None);
+                            for (int j = 0; j < Saves.Columns; j++)
+                                Saves.Articles[i, j] = mas[j].Trim(new char[] { '\t' });
+                        }
                         fileRead.Close();
                     }
                 }
@@ -200,6 +235,7 @@ namespace familyFinance
                  Для этого мы просто заново перезаписываем первые колонки массивов, вызывая метод SetFirstColumn*/
                 Income.SetFirstColumn(sIncomeArticles);
                 Expense.SetFirstColumn(sExpenseArticles);
+                Saves.SetFirstColumn(sSavesArticles);
                 //Обновляем данные в окне вывода, вызывая функцию TextBoxLine
                 rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
                 MessageBox.Show("Данные загружены из файла");
@@ -220,26 +256,6 @@ namespace familyFinance
                 rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
             }
             
-        }
-
-        private void btnSavesAdd_Click(object sender, EventArgs e)
-        {
-            if (cmbSavesArticles.SelectedIndex != -1)
-            {
-                if (txtSavesAdd.Text != "")
-                {
-                    if (Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] != "-")
-                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = Convert.ToString(Convert.ToInt32(Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)]) + Convert.ToInt32(txtSavesAdd.Text));
-                    else
-                        Saves.Articles[(cmbSavesArticles.SelectedIndex + 1), Convert.ToInt32(numSavesDay.Value)] = txtSavesAdd.Text;
-                    rtbOutput.Text = TextBoxLine(Income.Output(), Convert.ToString(Income.SumOfElements()), Expense.Output(), Convert.ToString(Expense.SumOfElements()), Saves.Output(), Convert.ToString(Saves.SumOfElements()), Convert.ToString(Saves.SumOfElements() + Income.SumOfElements() - Expense.SumOfElements()));
-                    MessageBox.Show("Сбережение добавлено");
-                }
-                else
-                    MessageBox.Show("Введите значение сбережения");
-            }
-            else
-                MessageBox.Show("Выберите статью сбережения");
         }
     }
 }
